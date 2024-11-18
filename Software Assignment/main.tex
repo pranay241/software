@@ -1,0 +1,329 @@
+\documentclass[journal,12pt,onecolumn]{IEEEtran}
+
+% Import necessary packages
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{txfonts}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{gensymb}
+\usepackage{comment}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{tkz-euclide} 
+\usepackage{listings}
+\usepackage{gvv}                                        
+\usepackage[latin1]{inputenc}                                
+\usepackage{color} 
+\usepackage{enumitem} % Include this package
+\usepackage{array}                                            
+\usepackage{longtable}                                       
+\usepackage{calc}                                             
+\usepackage{multirow}                                         
+\usepackage{hhline}                                           
+\usepackage{ifthen}                                           
+\usepackage{lscape}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{multicol} % Add the multicol package
+\usepackage{circuitikz}
+\usepackage{lipsum}
+\usepackage{textcomp}
+% New theorem declarations
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{problem}{Problem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}{Example}[section]
+\newtheorem{definition}[problem]{Definition}
+
+% Custom command definitions
+\newcommand{\BEQA}{\begin{eqnarray}}
+\newcommand{\EEQA}{\end{eqnarray}}
+\newcommand{\define}{\stackrel{\triangle}{=}}
+
+\theoremstyle{remark}
+\newtheorem{rem}{Remark}
+
+% Document begins here
+\begin{document}
+\bibliographystyle{IEEEtran}
+\vspace{3cm}
+
+% Title of the document
+\title{EIGENVALUES-HYBRID NEWTON POWER METHOD}
+\author{EE24BTECH11011 - PRANAY}
+\maketitle
+
+\bigskip
+
+% Custom figure and table numbering
+\renewcommand{\thefigure}{\theenumi}
+\renewcommand{\thetable}{\theenumi}
+\subsection{\textbf{What are Eigenvalues?}}
+An Eigenvalue is a scalar of linear operators for which there exists a non-zero vector. This property is equivalent to an Eigenvector.
+Geometrically, Eigenvalue meaning is the transformation in the particular point of direction where it is stretched. In case, the Eigenvalue is negative, the direction gets reversed.\\
+
+
+The eigenvalues of matrix are scalars by which some vectors (eigenvectors) change when the matrix (transformation) is applied to it. In other words, if $A$ is a square matrix of order $n \times n$ and v is a non-zero column vector of order $n \times 1$ such that $Av = \lambda$ (it means that the product of $A$ and $v$ is just a scalar multiple of v),then the scalar (real number) $\lambda$ is called an eigenvalue of the matrix $A$ that corresponds to the eigenvector $v$.
+\subsection{\textbf{How to find?}}
+
+To find the eigenvalues and eigenvectors of a square matrix $A$, we solve the eigenvalue equation:
+
+$$Av = \lambda v$$
+
+where:
+* $A$ is an $n \times n$ matrix
+* $v$ is a non-zero $n \times 1$ eigenvector
+* $\lambda$ is an eigenvalue
+
+We can rewrite this equation as:
+
+$$(A - \lambda I)v = 0$$
+
+where $I$ is the $n \times n$ identity matrix.
+
+For a non-trivial solution to exist, the determinant of $(A - \lambda I)$ must be zero:
+
+$$\det(A - \lambda I) = 0$$
+
+This equation is called the **characteristic equation**. Solving this equation for $\lambda$ gives the eigenvalues.
+
+Once we have the eigenvalues, we can find the corresponding eigenvectors by solving the system of linear equations $(A - \lambda I)v = 0$ for each eigenvalue $\lambda$.
+\subsection{\textbf{HYBRID NEWTON POWER METHOD}}
+
+
+The Hybrid Newton-Power method is a numerical technique to solve the eigenvalue problem $Ax = \lambda x$. 
+
+\section{Hybrid Newton-Power Method}
+
+The Hybrid Newton-Power method is a numerical technique to efficiently compute eigenvalues of large matrices. It combines the robustness of Newton's method with the simplicity of the power method.
+
+\textbf{ALGORITHM}
+
+\begin{enumerate}
+    \item \textbf{Initialization:}
+    \begin{align*}
+        &\text{Choose an initial guess vector } \mathbf{v}^{(0)}. \\
+        &\text{Set the iteration counter } k = 0.
+    \end{align*}
+    
+    \item \textbf{Power Iteration:}
+    \begin{align*}
+        \mathbf{w}^{(k+1)} &= A\mathbf{v}^{(k)}, \\
+        \mathbf{v}^{(k+1)} &= \frac{\mathbf{w}^{(k+1)}}{\|\mathbf{w}^{(k+1)}\|}.
+    \end{align*}
+    
+    \item \textbf{Newton's Method Correction:}
+    \begin{align*}
+        \lambda^{(k)} &= \frac{\mathbf{v}^{(k)T}A\mathbf{v}^{(k)}}{\mathbf{v}^{(k)T}\mathbf{v}^{(k)}} \quad \text{(Rayleigh quotient)}, \\
+        A^{(k)} &= A - \lambda^{(k)}I \quad \text{(shifted matrix)}, \\
+        A^{(k)}\mathbf{u}^{(k)} &= \mathbf{v}^{(k)} \quad \text{(solve linear system)}, \\
+        \mathbf{v}^{(k+1)} &= \mathbf{u}^{(k)}.
+    \end{align*}
+    
+    \item \textbf{Convergence Check:}
+    \begin{align*}
+        &\text{If } \| \mathbf{v}^{(k+1)} - \mathbf{v}^{(k)} \| < \epsilon, \text{ stop.} \\
+        &\text{Otherwise, increment } k \text{ and return to step 2.}
+    \end{align*}
+\end{enumerate}
+
+\textbf{Convergence Properties:}
+\begin{enumerate}
+    \item The power iteration converges to the dominant eigenvalue.
+    \item Newton's method refines the eigenvalue estimate and accelerates convergence.
+    \item The method is particularly effective for large sparse matrices.
+\end{enumerate}
+
+\textbf{Implementation Considerations:}
+\begin{enumerate}
+    \item \textbf{Matrix Storage:} For large sparse matrices, consider using sparse matrix formats to reduce memory usage and computational cost.
+    \item \textbf{Linear Solver:} The linear system in step 3 can be solved using direct or iterative methods.
+    \item \textbf{Preconditioning:} Preconditioning techniques can improve the convergence rate of the linear solver.
+    \item \textbf{Parallelism:} The power iteration and matrix-vector multiplication can be parallelized to speed up computations.
+\end{enumerate}
+
+By understanding the core concepts and implementation details, you can effectively apply the Hybrid Newton-Power method to solve a variety of eigenvalue problems in scientific and engineering applications.
+
+\section{Advantages of the Hybrid Newton-Power Method}
+
+The Hybrid Newton-Power method offers several advantages over traditional eigenvalue algorithms:
+
+\begin{enumerate}
+    \item \textbf{Robustness:}
+	    
+        \text{Combines the global convergence properties of the power method
+        with the local quadratic convergence}
+	    
+    
+    \item \textbf{Efficiency:}
+    
+        \text{Often converges faster especially for problems with multiple eigenvalues. Can handle large matrices.}
+   
+    
+    \item \textbf{Simplicity:}
+   
+        \text{The power iteration step is simple to implement,making it accessible to a wide range of users.}
+
+    
+    \item \textbf{Flexibility:}
+  
+        \text{Can be adapted to find multiple eigenvalues using deflation techniques or shifting strategies.}
+   
+    
+    \item \textbf{Accuracy:}
+    
+        \text{Newton's method correction ensures high accuracy in the computed eigenvalues and eigenvectors.}
+    
+\end{enumerate}
+
+
+In conclusion, the Hybrid Newton-Power method provides a powerful and versatile tool for solving eigenvalue problems, particularly those involving large-scale matrices.
+\section{Example: Hybrid Newton-Power Method}
+
+Consider the matrix:
+\begin{align}
+\myvec{A} = 
+\myvec{
+4 & 1 \\
+2 & 3
+}.
+\end{align}
+
+We aim to find the dominant eigenvalue and corresponding eigenvector using the Hybrid Newton-Power method. 
+
+\subsection*{Step-by-Step Solution}
+
+\begin{enumerate}
+    \item \textbf{Initialization:}
+    \begin{align*}
+        &\text{Choose an initial guess vector: } 
+        \myvec{v}^{(0)} = \myvec{
+        1 \\
+        1
+        }. \\
+        &\text{Set } k = 0.
+    \end{align*}
+    
+    \item \textbf{Power Iteration (Step 1):}
+    \begin{align*}
+        \myvec{w}^{(1)} &= \myvec{A}\myvec{v}^{(0)} = 
+        \myvec{
+        4 & 1 \\
+        2 & 3
+        }
+        \myvec{
+        1 \\
+        1
+        }
+        =
+        \myvec{
+        5 \\
+        5
+        }, \\
+        \myvec{v}^{(1)} &= \frac{\myvec{w}^{(1)}}{\|\myvec{w}^{(1)}\|} = 
+        \frac{\myvec{
+        5 \\
+        5
+        }}{\sqrt{5^2 + 5^2}} = 
+        \myvec{
+        \frac{1}{\sqrt{2}} \\
+        \frac{1}{\sqrt{2}}
+        }.
+    \end{align*}
+    
+    \item \textbf{Newton's Method Correction:}
+    \begin{align*}
+        \lambda^{(0)} &= \frac{\myvec{v}^{(1)T}\myvec{A}\myvec{v}^{(1)}}{\myvec{v}^{(1)T}\myvec{v}^{(1)}} = 
+        \frac{\myvec{
+        \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+        }
+        \myvec{
+        4 & 1 \\
+        2 & 3
+        }
+        \myvec{
+        \frac{1}{\sqrt{2}} \\
+        \frac{1}{\sqrt{2}}
+        }}{\myvec{
+        \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+        }
+        \myvec{
+        \frac{1}{\sqrt{2}} \\
+        \frac{1}{\sqrt{2}}
+        }}, \\
+        &= \frac{\frac{5}{2}}{1} = 5.
+    \end{align*}
+    
+    Form the shifted matrix:
+    \begin{align*}
+    \myvec{A}^{(0)} &= \myvec{A} - \lambda^{(0)}\myvec{I} = 
+    \myvec{
+    4 & 1 \\
+    2 & 3
+    } - 
+    5 \myvec{
+    1 & 0 \\
+    0 & 1
+    } = 
+    \myvec{
+    -1 & 1 \\
+    2 & -2
+    }.
+    \end{align*}
+
+    Solve the system:
+    \begin{align*}
+    \myvec{A}^{(0)}\myvec{u}^{(0)} &= \myvec{v}^{(1)}, \quad \text{so } 
+    \myvec{
+    -1 & 1 \\
+    2 & -2
+    }
+    \myvec{u}^{(0)} = 
+    \myvec{
+    \frac{1}{\sqrt{2}} \\
+    \frac{1}{\sqrt{2}}
+    }.
+    \end{align*}
+    Solving gives:
+    \begin{align*}
+    \myvec{u}^{(0)} &= 
+    \myvec{
+    -\frac{1}{\sqrt{2}} \\
+    0
+    }.
+    \end{align*}
+    
+    Update the eigenvector:
+    \begin{align*}
+    \myvec{v}^{(2)} &= \myvec{u}^{(0)}.
+    \end{align*}
+
+    \item \textbf{Convergence Check:}
+    \begin{align*}
+        &\text{If } \| \myvec{v}^{(2)} - \myvec{v}^{(1)} \| < \epsilon, \text{ stop. Otherwise, repeat.}
+    \end{align*}
+\end{enumerate}
+
+The dominant eigenvalue approximated after iterations is \(\lambda \approx 5\), and the corresponding eigenvector is:
+\begin{align*}
+\myvec{v} &\approx 
+\myvec{
+\frac{1}{\sqrt{2}} \\
+\frac{1}{\sqrt{2}}
+}.
+\end{align*}
+\vspace*{\fill}  
+\begin{center}  
+    \fbox{\parbox{8cm}{\centering \textbf{Code at codes/code.c \\ if entry $5+4i$ enter it as $5$   $4$} \\ }}
+\end{center}
+\vspace*{\fill}
+\end{document}
+
